@@ -1,5 +1,7 @@
 import React from "react";
-import { PlayListApp } from "./PlayListApp/PlayListApp";
+import { SearchCard } from "./SearchCard/SearchCard";
+import { ResultsCard } from "./ResultsCard/ResultsCard";
+import { PlayListCard } from "./PlayListCard/PlayListCard";
 
 const mockResponse = {
   tracks: {
@@ -35,7 +37,11 @@ const mockResponse = {
 
 function App() {
   return (
-    <PlayListApp responseObj={mockResponse} />
+    <>
+    <SearchCard />
+    <ResultsCard responseObj={mockResponse} />
+    <PlayListCard />
+    </>
   );
 }
 
