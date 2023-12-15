@@ -1,9 +1,11 @@
 import React from "react";
-import { SearchCard } from "./SearchCard/SearchCard";
+import { SearchCard } from "./SearchCard/SearchCard"
 import { ResultsCard } from "./ResultsCard/ResultsCard";
 import { PlayListCard } from "./PlayListCard/PlayListCard";
 
-const mockResponse = {
+const loggedIn = false;
+
+const tracksObj = {
   tracks: {
     items: [
       {
@@ -38,9 +40,16 @@ const mockResponse = {
 function App() {
   return (
     <>
-    <SearchCard />
-    <ResultsCard responseObj={mockResponse} />
-    <PlayListCard />
+    <header>
+      <h1>Jams</h1>
+    </header>
+    <main>
+    <SearchCard loggedIn={loggedIn} />
+    <div id="blocksContainer">
+      <ResultsCard tracksObj={tracksObj} loggedIn={loggedIn} />
+      <PlayListCard />
+    </div>
+    </main>
     </>
   );
 }

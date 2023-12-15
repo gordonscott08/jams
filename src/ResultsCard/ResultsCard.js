@@ -1,10 +1,12 @@
 import React from "react";
+import { SongsBlock } from "../SongsBlock/SongsBlock";
 
-export function ResultsCard({responseObj}) {
+export function ResultsCard(props) {
+    const {tracksObj, loggedIn} = props;
     return(
-    <>
-    <p>The first track returned is called {responseObj.tracks.items[0].name} by {responseObj.tracks.items[0].artists[0].name} from the album {responseObj.tracks.items[0].album.name}.</p>
-    <p>The second track returned is called {responseObj.tracks.items[1].name} by {responseObj.tracks.items[1].artists[0].name} from the album {responseObj.tracks.items[1].album.name}.</p>
-    </>
+        <section className="majorSection">
+        <h2>Search Results</h2>
+        {loggedIn ? <SongsBlock tracksObj={tracksObj}/> : '' }
+        </section>
     )
 }
