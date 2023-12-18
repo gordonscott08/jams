@@ -3,19 +3,18 @@ import { Song } from "../Song/Song"
 
 
 export function ResultsCard(props) {
-    const {tracksArr, loggedIn, toggleSelectedSong} = props;
+    const {tracksArr, addSong, removeSong} = props;
 
     const songsBlock = (
         <section className="songsBlock">
-        <p>The length of the tracks Arr is {tracksArr.length}</p>
-            {tracksArr.map((item) => (<Song toggleSelectedSong={toggleSelectedSong} fullObj={item} key={item.id} id={item.id} name={item.name} album={item.album.name} artist={item.artists[0].name} />))}
+            {tracksArr.map((item) => (<Song addSong={addSong} removeSong={removeSong} fullObj={item} key={item.id} id={item.id} name={item.name} album={item.album.name} artist={item.artists[0].name} />))}
         </section>
     )
 
     return(
-        <section className="majorSection">
+        <section id="results" className="box">
         <h2>Search Results</h2>
-        {loggedIn && songsBlock}
+        {songsBlock}
         </section>
     )
 }

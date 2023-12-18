@@ -3,10 +3,11 @@ import { ResultsCard } from "./ResultsCard/ResultsCard";
 import { renewToken } from "./mockData.js";
 import { SearchCard } from "./SearchCard/SearchCard.js";
 import { PlayListCard } from "./PlayListCard/PlayListCard.js";
+import './App.css';
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
-  const [searchResults,setSearchResults] = useState(null);
+  const [searchResults, setSearchResults] = useState([]);
   const [selectedSongs, setSelectedSongs] = useState([]);
 
   useEffect(()=>{
@@ -22,18 +23,27 @@ function App() {
     setLoggedIn(true);
   }
 
-  function toggleSelectedSong(songObj) {
+  function addSong(songObj) {
     console.log(songObj.id);
-    //if the selectedSongs array includes this song, remove it from selected songs, and add it to search results.
-    if (selectedSongs.some((item)=>item.id === songObj.id)) {
-      setSelectedSongs(prevSelected => prevSelected.filter(item => item !== songObj))
-      setSearchResults(prevResults => [songObj, ...prevResults])
-    //otherwise add to selected songs, and remove from search results
-    } else {
+    //add to selected and remove from search results.
       setSelectedSongs(prevSelected => [songObj, ...prevSelected]);
-      setSearchResults(prevResults => prevResults.filter(item => item!== songObj))
-    }
+      setSearchResults(prevResults => prevResults.filter(item => item.id !== songObj.id))
     console.log(selectedSongs)
+  }
+
+  function removeSong(songObj) {
+    //remove from selected. Add back to search results unless it's alredy there.
+    setSelectedSongs(prevSelected => prevSelected.filter(item => item.jamsId !== songObj.jamsId));
+    //if search results already include the removed song, exit sub. If not, add the song to search results.
+    if (searchResults.some((item)=>item.id === songObj.id)) {
+      console.log(`Sent object has id: ${songObj.id}.`)
+      console.log('true');
+      return;
+    } else {
+      console.log(`Sent object has id: ${songObj.id}.`)
+      console.log('false');
+      setSearchResults(prevResults => [songObj, ...prevResults]);
+    }
   }
 
   return (
@@ -42,11 +52,15 @@ function App() {
       <h1>Jams</h1>
       <SearchCard loggedIn={loggedIn} handleLoginButton={handleLoginButton} setSearchResults={setSearchResults} />
      </header>
-      {searchResults && <ResultsCard tracksArr={searchResults} loggedIn={loggedIn} toggleSelectedSong={toggleSelectedSong}/>}
-      {searchResults && <PlayListCard tracksArr={selectedSongs} loggedIn={loggedIn} toggleSelectedSong={toggleSelectedSong}/>}
+     <main>
+      <div id="blocksContainer">
+      {loggedIn && <ResultsCard tracksArr={searchResults} addSong={addSong} removeSong={removeSong} />}
+      {loggedIn && <PlayListCard tracksArr={selectedSongs} addSong={addSong} removeSong={removeSong} setSelectedSongs={setSelectedSongs} setSearchResults={setSearchResults} />}
+      </div>
+    </main>
+    <footer>&copy; 2023 Gordon Scott</footer>
     </>
   )
 }
-
 
 export default App;

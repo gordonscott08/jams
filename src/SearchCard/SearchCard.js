@@ -11,19 +11,20 @@ export function SearchCard(props) {
         console.log(text);
       }
 
-    const handleSubmitClick = () => {
+    const handleSubmit = () => {
         const requestTracks = async function (text) {
             console.log('Requesting tracks.')
             const response = await getTracks(text);
             setSearchResults(response.tracks.items);
             console.log('Tracks saved.')
           }
-          requestTracks(text);   
+          requestTracks(text);
+          setText('');  
     }
 
     const handleClear = () => {
         setText('');
-        setSearchResults(null);
+        setSearchResults([]);
         document.getElementById('userInput').focus();
     }
 
@@ -32,15 +33,17 @@ export function SearchCard(props) {
         <div id="searchElementsContainer">
             <input type="text" onChange={handleTextChange} value={text} name="search" id="userInput" placeholder="Search for Songs!"></input>
             <div id="searchButtonContainer">
-                <button id="submit" onClick={handleSubmitClick} class="largeButton">Search</button>
-                <button id="clear" onClick={handleClear} class="largeButton">Clear</button>
+                <button id="submit" onClick={handleSubmit} className="largeButton">Search</button>
+                <button id="clear" onClick={handleClear} className="largeButton">Clear</button>
             </div>
         </div>
     </section>
     )
 
     const loginSection = (
+        <section id="searchSection">
         <button onClick={handleLoginButton} className="largeButton">Login to Spotify</button>
+        </section>
     )
 
     return (
