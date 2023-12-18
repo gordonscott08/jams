@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Song } from "../Song/Song";
+import { getUserId, postNewPlaylist, postTracksToPlaylist } from "../apiCalls";
 
 export function PlayListCard(props) {
     const {tracksArr, addSong, removeSong, setSelectedSongs, setSearchResults} = props;
@@ -12,18 +13,18 @@ export function PlayListCard(props) {
       }
 
     const handleSubmit = () => {
-        if (text.length === 0) {
-            alert('Please enter a playlist name first.');
-            document.getElementById('userPlaylistName').focus();
-            return;
-        }
-        if (tracksArr.length === 0) {
-            alert('Please add a song to the playlist first.');
-            setText('');
-            document.getElementById('userInput').focus();
-            return;
-        }
-        setSubmitted(true);
+        const formattedTracksArr = tracksArr.map((item)=> 'spotify:track:'+item.id)
+
+        const postTracks = async function () {
+            console.log('Requesting user ID');
+            const userId = await getUserId();
+            console.log(`Posting new playlist as ${text}`);
+            const newListResponse = await postNewPlaylist(text);
+            console.log('Posting tracks to playlist');
+            const postedTracksResponse = await postTracksToPlaylist(formattedTracksArr);
+          }
+          postTracks();
+          setText('');  
     }
 
     const handleNewSearch = () => {

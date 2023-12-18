@@ -1,8 +1,8 @@
 import React, {useState, useEffect } from "react";
 import { ResultsCard } from "./ResultsCard/ResultsCard";
-import { renewToken } from "./mockData.js";
 import { SearchCard } from "./SearchCard/SearchCard.js";
 import { PlayListCard } from "./PlayListCard/PlayListCard.js";
+import {currentToken, requestToken, redirectToSpotifyAuthorize} from "./apiCalls.js";
 import './App.css';
 
 function App() {
@@ -11,16 +11,43 @@ function App() {
   const [selectedSongs, setSelectedSongs] = useState([]);
 
   useEffect(()=>{
-    console.log('Requesting token.')
-    const requestData = async () => {
-      const response = await renewToken();
-      console.log('Token refreshed.')
+    const handleLoad = async () => {
+    //first, check for params
+    const params = new URLSearchParams(window.location.search);
+    const codeParam = params.get('code');
+    const stateParam = params.get('state');
+    //if params, process and make an API call for a first
+    if (codeParam) {
+        if (stateParam != localStorage.getItem("sentStateParam")) {
+            throw new Error ('Error. Returned State Parameter does not match Sent.');
+        }
+        console.log('OK. Query parameters detected. State param matched. Continuing authentication.')
+        const token = await requestToken(codeParam);
+        currentToken.save(token);
+        // Remove the code from the URL so it's not visible and doesn't refresh to it.
+        const url = new URL(window.location.href);
+        url.searchParams.delete("code");
+        url.searchParams.delete("state");
+        const updatedUrl = url.search ? url.href : url.href.replace('?', '');
+        window.history.replaceState({}, document.title, updatedUrl);
+      } else {
+        console.log('OK. No params.');
+    };
+    //second possibility: no params, but also no token. User will need to click 'login'.
+    if (!currentToken.access_token) {
+      setLoggedIn(false);
+      console.log('No token discovered. Login rendered.');
+    } else {
+    //third possibility: Most common case. No params, token discovered. Ready to begin queries.
+      setLoggedIn(true);
+      console.log('OK. Token discovered.')
     }
-    requestData();
+    }
+    handleLoad();
   },[])
 
   function handleLoginButton() {
-    setLoggedIn(true);
+    redirectToSpotifyAuthorize();
   }
 
   function addSong(songObj) {

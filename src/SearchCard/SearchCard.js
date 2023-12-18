@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import { getTracks } from "../mockData"
+import { searchSpotify } from "../apiCalls";
 
 export function SearchCard(props) {
     const {loggedIn, handleLoginButton, setSearchResults} = props;
@@ -12,13 +12,16 @@ export function SearchCard(props) {
       }
 
     const handleSubmit = () => {
-        const requestTracks = async function (text) {
+        
+
+
+        const requestTracks = async function () {
             console.log('Requesting tracks.')
-            const response = await getTracks(text);
+            const response = await searchSpotify(text);
             setSearchResults(response.tracks.items);
             console.log('Tracks saved.')
           }
-          requestTracks(text);
+          requestTracks();
           setText('');  
     }
 
@@ -31,7 +34,7 @@ export function SearchCard(props) {
     const searchSection = (
         <section id="searchSection">
         <div id="searchElementsContainer">
-            <input type="text" onChange={handleTextChange} value={text} name="search" id="userInput" placeholder="Search for Songs!"></input>
+            <input type="text" onChange={handleTextChange} value={text} name="search" id="userInput" placeholder="Search for Songs!" autoFocus></input>
             <div id="searchButtonContainer">
                 <button id="submit" onClick={handleSubmit} className="largeButton">Search</button>
                 <button id="clear" onClick={handleClear} className="largeButton">Clear</button>

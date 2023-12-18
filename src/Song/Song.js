@@ -20,14 +20,12 @@ export function Song({id, name, artist, album, fullObj, addSong, removeSong, rem
 
     return (
         <section className="song">
-            <h4>{name}</h4>
-            <h5>{artist}</h5>
-            <h5>{album}</h5>
+            <div className="songText">
+                <h4>{name}</h4>
+                <h5>{artist}</h5>
+                <h5>{album}</h5>
+            </div>
             <button onClick={handleClick}>{removeButton ? 'Remove' : 'Add'}</button>
         </section>
     )
 }
-
-/*
-
-*/
