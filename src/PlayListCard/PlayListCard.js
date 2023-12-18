@@ -17,11 +17,11 @@ export function PlayListCard(props) {
 
         const postTracks = async function () {
             console.log('Requesting user ID');
-            const userId = await getUserId();
+            await getUserId();
             console.log(`Posting new playlist as ${text}`);
-            const newListResponse = await postNewPlaylist(text);
+            await postNewPlaylist(text);
             console.log('Posting tracks to playlist');
-            const postedTracksResponse = await postTracksToPlaylist(formattedTracksArr);
+            await postTracksToPlaylist(formattedTracksArr);
           }
           postTracks();
           setText('');  

@@ -18,7 +18,7 @@ function App() {
     const stateParam = params.get('state');
     //if params, process and make an API call for a first
     if (codeParam) {
-        if (stateParam != localStorage.getItem("sentStateParam")) {
+        if (stateParam !== localStorage.getItem("sentStateParam")) {
             throw new Error ('Error. Returned State Parameter does not match Sent.');
         }
         console.log('OK. Query parameters detected. State param matched. Continuing authentication.')
