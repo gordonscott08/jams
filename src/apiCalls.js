@@ -1,5 +1,5 @@
 const clientId = 'e68bafb5cea6442ab13d02840d1862cc'; //this is public information
-const redirectUrl = 'http://localhost:3000';
+const redirectUrl = 'https://harmonious-crisp-64891e.netlify.app/' // 'http://localhost:3000';
 
 const currentToken = {
     get access_token() { return localStorage.getItem('access_token') || null; },
