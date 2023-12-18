@@ -1,20 +1,21 @@
 import React from "react";
-import { SongsBlock } from "../SongsBlock/SongsBlock";
+import { Song } from "../Song/Song"
 
 
 export function ResultsCard(props) {
-    const {tracksArr, loggedIn} = props;
+    const {tracksArr, loggedIn, toggleSelectedSong} = props;
 
-    const placeholder = <p>Your Search Results Will Display Here</p>
-
-    const results = (
-        <section className="majorSection">
-            <h2>Search Results</h2>
-            {loggedIn && <SongsBlock tracksArr={tracksArr} />}
+    const songsBlock = (
+        <section className="songsBlock">
+        <p>The length of the tracks Arr is {tracksArr.length}</p>
+            {tracksArr.map((item) => (<Song toggleSelectedSong={toggleSelectedSong} fullObj={item} key={item.id} id={item.id} name={item.name} album={item.album.name} artist={item.artists[0].name} />))}
         </section>
     )
 
-    return(tracksArr ? results : placeholder)
+    return(
+        <section className="majorSection">
+        <h2>Search Results</h2>
+        {loggedIn && songsBlock}
+        </section>
+    )
 }
-
-//{loggedIn && <SongsBlock/>}
