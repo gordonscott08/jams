@@ -1,57 +1,52 @@
-import React from "react";
-import { SearchCard } from "./SearchCard/SearchCard"
+import React, {useState, useEffect } from "react";
 import { ResultsCard } from "./ResultsCard/ResultsCard";
-import { PlayListCard } from "./PlayListCard/PlayListCard";
-
-const loggedIn = false;
-
-const tracksObj = {
-  tracks: {
-    items: [
-      {
-        id: '6U4VqEHy4n5VeiH4pQPL24',
-        name: 'You\'re Welcome',
-        artists: [
-          {
-            name: 'Dwayne Johnson'
-          }
-        ],
-        album: {
-          name: 'Moana Soundtrack'
-        }
-      },
-      {
-        id: '2bwSCIuNtVrQPVddCi8sOW',
-        name: 'Where you are',
-        artists: [
-          {
-            name: 'Christopher Jackson'
-          }
-        ],
-        album: {
-          name: 'Moana Soundtrack'
-        }
-      }
-    ]
-  }
-}
-
+import { renewToken, getTracks } from "./mockData.js";
+import { SearchCard } from "./SearchCard/SearchCard.js";
 
 function App() {
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [tracksObj,setTracksObj] = useState(null);
+  const [searchTerm, setSearchTerm] = useState('');
+
+  useEffect(()=>{
+    console.log('Requesting token.')
+    const requestData = async () => {
+      const response = await renewToken();
+      console.log('Token refreshed.')
+    }
+    requestData();
+  },[])
+
+  function handleLoginButton() {
+    setLoggedIn(true);
+  }
+
+  //could the below live in the search card component?
+  function handleSearchSubmit(newSearch) {
+    const requestTracks = async function (newSearch) {
+      console.log('Requesting tracks.')
+      const response = await getTracks(newSearch);
+      setTracksObj(response);
+      console.log('Tracks object saved.')
+    }
+    requestTracks(newSearch);
+  }
+
   return (
     <>
-    <header>
+     <header>
       <h1>Jams</h1>
-    </header>
-    <main>
-    <SearchCard loggedIn={loggedIn} />
-    <div id="blocksContainer">
-      <ResultsCard tracksObj={tracksObj} loggedIn={loggedIn} />
-      <PlayListCard />
-    </div>
-    </main>
+      <SearchCard loggedIn={loggedIn} handleLoginButton={handleLoginButton} handleSearchSubmit={handleSearchSubmit} />
+     </header>
+      {tracksObj && <ResultsCard tracksObj={tracksObj} loggedIn={loggedIn}/>}
+      <footer>
+        <p>{JSON.stringify(tracksObj)}</p>
+        <p>{searchTerm}</p>
+      </footer>
     </>
-  );
+  )
 }
+
+//  <ResultsCard tracksObj={tracksObj} loggedIn={loggedIn}/>
 
 export default App;
