@@ -1,12 +1,11 @@
 import React, {useState, useEffect } from "react";
 import { ResultsCard } from "./ResultsCard/ResultsCard";
-import { renewToken, getTracks } from "./mockData.js";
+import { renewToken } from "./mockData.js";
 import { SearchCard } from "./SearchCard/SearchCard.js";
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
-  const [tracksObj,setTracksObj] = useState(null);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchResults,setSearchResults] = useState(null);
 
   useEffect(()=>{
     console.log('Requesting token.')
@@ -21,32 +20,16 @@ function App() {
     setLoggedIn(true);
   }
 
-  //could the below live in the search card component?
-  function handleSearchSubmit(newSearch) {
-    const requestTracks = async function (newSearch) {
-      console.log('Requesting tracks.')
-      const response = await getTracks(newSearch);
-      setTracksObj(response);
-      console.log('Tracks object saved.')
-    }
-    requestTracks(newSearch);
-  }
-
   return (
     <>
      <header>
       <h1>Jams</h1>
-      <SearchCard loggedIn={loggedIn} handleLoginButton={handleLoginButton} handleSearchSubmit={handleSearchSubmit} />
+      <SearchCard loggedIn={loggedIn} handleLoginButton={handleLoginButton} setSearchResults={setSearchResults} />
      </header>
-      {tracksObj && <ResultsCard tracksObj={tracksObj} loggedIn={loggedIn}/>}
-      <footer>
-        <p>{JSON.stringify(tracksObj)}</p>
-        <p>{searchTerm}</p>
-      </footer>
+      {searchResults && <ResultsCard tracksArr={searchResults} loggedIn={loggedIn}/>}
     </>
   )
 }
 
-//  <ResultsCard tracksObj={tracksObj} loggedIn={loggedIn}/>
 
 export default App;

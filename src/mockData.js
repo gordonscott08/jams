@@ -51,7 +51,7 @@ const parentObj = {
             if (Math.random()<=.999) {
                 console.log('Response 200');
                 resolve(parentObj);
-                console.log(searchTerm);
+                console.log(`Received request for ${searchTerm}`);
             } else {
                 reject('Simulated Retrieval Error');
             }

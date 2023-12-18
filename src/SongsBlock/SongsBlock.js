@@ -2,7 +2,7 @@ import React from "react";
 import { Song } from "../Song/Song";
 
 export function SongsBlock(props) {
-    const tracksArr = props.tracksObj.tracks.items;
+    const {tracksArr} = props;
     
     return (
         <section className="songsBlock">

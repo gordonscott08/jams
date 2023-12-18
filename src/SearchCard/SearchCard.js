@@ -1,17 +1,9 @@
-import React, {useState, useEffect } from "react";
-
+import React, {useState} from "react";
+import { getTracks } from "../mockData"
 
 export function SearchCard(props) {
-    const {loggedIn, handleLoginButton, handleSearchSubmit} = props;
-    return (
-        <>
-        {loggedIn ? <Search handleSearchSubmit={handleSearchSubmit}/> : <button onClick={handleLoginButton} className="largeButton">Login to Spotify</button>}
-        </>
-    )
-}
+    const {loggedIn, handleLoginButton, setSearchResults} = props;
 
-function Search(props) {
-    const {handleSearchSubmit} = props;
     const [text, setText] = useState('');
 
     const handleTextChange = (event) => {
@@ -20,18 +12,35 @@ function Search(props) {
       }
 
     const handleSubmitClick = () => {
-        handleSearchSubmit(text);
+        const requestTracks = async function (text) {
+            console.log('Requesting tracks.')
+            const response = await getTracks(text);
+            setSearchResults(response.tracks.items);
+            console.log('Tracks saved.')
+          }
+          requestTracks(text);   
     }
 
-    return (
+    const searchSection = (
         <section id="searchSection">
-            <div id="searchElementsContainer">
-                <input type="text" onChange={handleTextChange} value={text} name="search" id="userInput" placeholder="Search for Songs!"></input>
-                <div id="searchButtonContainer">
-                    <button id="submit" onClick={handleSubmitClick} class="largeButton">Search</button>
-                    <button id="clear" class="largeButton">Clear</button>
-                </div>
+        <div id="searchElementsContainer">
+            <input type="text" onChange={handleTextChange} value={text} name="search" id="userInput" placeholder="Search for Songs!"></input>
+            <div id="searchButtonContainer">
+                <button id="submit" onClick={handleSubmitClick} class="largeButton">Search</button>
+                <button id="clear" class="largeButton">Clear</button>
             </div>
-        </section>
+        </div>
+    </section>
+    )
+
+    const loginSection = (
+        <button onClick={handleLoginButton} className="largeButton">Login to Spotify</button>
+    )
+
+    return (
+        <>
+        {loggedIn ? searchSection : loginSection}
+        </>
     )
 }
+
