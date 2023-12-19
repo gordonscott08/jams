@@ -1,5 +1,8 @@
 # Jams React: Spotify Playlist Builder #
 
+## Link to Site ##
+The current version of this project is hosted on Netlify: [Jams](https://harmonious-crisp-64891e.netlify.app/).
+
 ## Project Description ##
 This site uses the [Spotify API](developer.spotify.com) to search for songs and build custom playlists that can then be saved to the user's Spotify account.
 The primary purpose is to gain additional experience working with PKCE API connections and React. I first completed a [plain vanilla version](https://github.com/gordonscott08/vanillaSpotify) of this project before building this version in React.
