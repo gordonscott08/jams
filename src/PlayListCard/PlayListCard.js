@@ -32,7 +32,6 @@ export function PlayListCard(props) {
         setSelectedSongs([]);
         setSubmitted(false);
         setText('');
-        document.getElementById('userInput').focus();
     }
 
     const songsSection = (
